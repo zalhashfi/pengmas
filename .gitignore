@@ -31,6 +31,12 @@
 # Cache TypeScript
 *.tsbuildinfo
 
+# ---------------------------------------------------------------------------
+# Gambar referensi desain. Disimpan lokal untuk acuan kerja, tidak di-push:
+# file-nya milik pihak ketiga (Dribbble/Pinterest), bukan aset project ini.
+# ---------------------------------------------------------------------------
+/referensi/
+
 # misc
 .DS_Store
 *.pem

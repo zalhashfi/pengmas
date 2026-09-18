@@ -91,12 +91,22 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Kolom kanan: panel kaca berlapis dengan model 3D + snippet mengambang. */}
+          {/* Kolom kanan: komposisi berlapis.
+              Empat lapisan, mengikuti Dimensional Layering: lapisan bayangan
+              di belakang, snippet sparkline kiri-atas, snippet status kanan-bawah
+              (keduanya mengambang DI LUAR tepi panel, ciri khas referensi),
+              lalu panel kaca utama di depan. */}
           <div className="relative">
-            {/* Snippet mengambang di belakang panel utama: memberi kedalaman. */}
+            {/* Lapisan 1: bayangan lembut di belakang, memberi kesan panel terapung. */}
             <div
               aria-hidden="true"
-              className="glass-snippet absolute -right-2 -top-4 hidden h-28 w-40 rounded-card sm:block"
+              className="absolute inset-x-8 -bottom-4 top-10 rounded-card border border-border bg-card/50 shadow-e1"
+            />
+
+            {/* Lapisan 2: snippet sparkline, mengambang di kiri-atas. */}
+            <div
+              aria-hidden="true"
+              className="glass-snippet absolute -left-4 -top-5 z-20 hidden h-28 w-40 rounded-card sm:block"
             >
               <div className="flex h-full flex-col gap-2 p-3">
                 <div className="flex items-center justify-between">
@@ -121,8 +131,27 @@ export function Hero() {
               </div>
             </div>
 
-            {/* Panel kaca utama. */}
-            <div className="glass-panel relative rounded-card">
+            {/* Lapisan 3: snippet status, mengambang di kanan-bawah. Angka
+                ditandai sebagai contoh di panel utama di bawah.
+                Memakai permukaan SOLID, bukan kaca, untuk menaati batas dosis
+                R-10 (blur maksimum 1-2 elemen; navbar sudah memakai satu). */}
+            <div
+              aria-hidden="true"
+              className="absolute -bottom-5 -right-3 z-20 hidden items-center gap-3 rounded-card border border-border bg-card px-3.5 py-2.5 shadow-e4 sm:flex"
+            >
+              <span className="grid size-8 place-items-center rounded-lg bg-status-good/15">
+                <Wind className="size-4 text-status-good" />
+              </span>
+              <span className="flex flex-col leading-none">
+                <span className="tabular text-sm font-semibold">742</span>
+                <span className="mt-1 text-[10px] text-muted-foreground">
+                  {t.metrics.co2.name} · {t.metrics.co2.unit}
+                </span>
+              </span>
+            </div>
+
+            {/* Lapisan 4: panel kaca utama. `relative z-10` menjaga urutan tumpuk. */}
+            <div className="glass-panel relative z-10 rounded-card">
               {/* Kepala panel */}
               <div className="flex items-center justify-between gap-3 border-b border-glass-border px-5 py-3.5">
                 <div className="min-w-0">

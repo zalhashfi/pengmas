@@ -75,6 +75,9 @@ functions/
   api/[[path]].ts         # proxy ke API eksternal (wajib, lihat di bawah)
 public/
   3d-indoor.glb           # model 3D hero
+skills/
+  README.md               # file apa yang dibutuhkan tiap skill turunan antislop
+  verify-antislop-skills.mjs   # pemeriksa kelengkapan
 ```
 
 ---

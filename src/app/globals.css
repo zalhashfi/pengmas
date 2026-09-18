@@ -1,20 +1,8 @@
 @import "tailwindcss";
 
-/* =============================================================================
-   Token desain Pengmas Air Quality.
-   Nilai diambil PERSIS dari DESIGN.md §2 (Color Palette & Theming).
-   Jangan mengarang nilai token baru di sini. Bila ada yang perlu diubah,
-   ubah DESIGN.md §2 dulu, lalu samakan file ini.
+/* Nilai token diambil dari DESIGN.md §2. Bila perlu diubah, ubah DESIGN.md dulu. */
 
-   Struktur:
-     1. Token mentah (:root / .dark) - nilai oklch apa adanya dari DESIGN.md
-     2. Pemetaan ke @theme inline - supaya kelas Tailwind (bg-primary, text-muted-foreground)
-        bisa dipakai
-     3. Token semantik status kualitas udara (3 level, lihat DESIGN.md §2)
-     4. Base layer - default body, focus ring, smooth scroll
-   ============================================================================= */
-
-/* --- 1. Token mentah: LIGHT (default) ------------------------------------- */
+/* LIGHT (default). */
 :root {
   --background: oklch(0.995 0.004 230);
   --foreground: oklch(0.145 0 0);
@@ -49,11 +37,7 @@
   --sidebar-border: oklch(0.92 0.005 235);
   --sidebar-ring: oklch(0.53 0.21 245);
 
-  /* ---------------------------------------------------------------------
-     Elevation (Dimensional Layering - hasil ui-ux-pro-max --domain style).
-     Empat tingkat; bayangan diwarnai ke hue latar (bukan hitam pekat) supaya
-     terasa menyatu, bukan mengambang.
-     --------------------------------------------------------------------- */
+  /* Empat tingkat elevasi. Bayangan diwarnai ke hue latar, bukan hitam pekat. */
   --elevation-1: 0 1px 2px oklch(0.53 0.05 245 / 6%), 0 1px 3px oklch(0.53 0.05 245 / 4%);
   --elevation-2: 0 2px 4px oklch(0.53 0.05 245 / 6%), 0 4px 12px oklch(0.53 0.05 245 / 6%);
   --elevation-3: 0 4px 8px oklch(0.53 0.05 245 / 7%), 0 12px 28px oklch(0.53 0.05 245 / 8%);
@@ -65,14 +49,7 @@
   --icon-tile-bg: oklch(0.95 0.03 245);
   --icon-tile-fg: oklch(0.45 0.19 245);
 
-  /* ---------------------------------------------------------------------
-     Glassmorphism (hasil ui-ux-pro-max --domain style, query
-     "premium SaaS landing glassmorphism floating layer depth").
-     Tiga tingkat kaca: panel utama, panel sekunder, dan snippet mengambang.
-     Border bagian dalam memberi kesan refraksi tepi (lihat design-taste-frontend
-     Appendix C: label sebagai "web glassmorphism approximation", bukan Apple
-     Liquid Glass).
-     --------------------------------------------------------------------- */
+  /* Tiga tingkat kaca. Approximation web glassmorphism, bukan Apple Liquid Glass. */
   --glass-bg: oklch(1 0 0 / 72%);
   --glass-border: oklch(1 0 0 / 60%);
   --glass-highlight: oklch(1 0 0 / 40%);
@@ -82,15 +59,13 @@
   --glass-snippet-bg: oklch(1 0 0 / 80%);
   --glass-snippet-blur: 8px;
 
-  /* Mesh gradient: tiga titik radial warna brand dengan opasitas rendah.
-     Dipakai sebagai LATAR hero, BUKAN sebagai aksen tombol. Karena ini
-     dekoratif, ia tidak melanggar aturan "satu aksen" (R-29). */
+  /* Latar mesh hero. Dekoratif, jadi tidak melanggar aturan satu aksen (R-29). */
   --mesh-1: oklch(0.53 0.21 245 / 22%);
   --mesh-2: oklch(0.65 0.18 190 / 14%);
   --mesh-3: oklch(0.55 0.20 300 / 10%);
 }
 
-/* --- 1b. Token mentah: DARK ----------------------------------------------- */
+/* DARK. */
 .dark {
   --background: oklch(0.14 0.015 240);
   --foreground: oklch(0.985 0 0);
@@ -130,7 +105,7 @@
   --elevation-4: 0 8px 16px oklch(0 0 0 / 40%), 0 24px 48px oklch(0 0 0 / 38%);
 }
 
-/* --- 2. Pemetaan ke utility Tailwind -------------------------------------- */
+/* Pemetaan token ke utility Tailwind. */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -176,6 +151,13 @@
   --color-status-offline: #64748b;
   --color-status-offline-border: #475569;
 
+  /* Teks di atas badge status. Putih gagal AA di ketiga warna status (2.15:1 sampai
+     3.76:1, diukur dengan antislop-human/contrast-check.py), jadi dipakai warna gelap.
+     Latar statusnya tidak diubah karena juga dipakai sebagai titik dan garis grafik. */
+  --color-status-good-ink: #052e20;
+  --color-status-moderate-ink: #3a2400;
+  --color-status-unhealthy-ink: #2b0606;
+
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -204,7 +186,7 @@
   --font-mono: var(--font-fira-code);
 }
 
-/* --- 3. Base layer -------------------------------------------------------- */
+/* Base layer. */
 @layer base {
   * {
     border-color: var(--border);
@@ -240,7 +222,7 @@
   }
 }
 
-/* --- 3b. Komponen kaca & mesh (component layer) -------------------------- */
+/* Kaca dan mesh. */
 @layer components {
   /* Panel kaca utama. Approximation web glassmorphism, BUKAN Apple Liquid
      Glass (lihat design-taste-frontend Appendix C). Border dalam memberi
@@ -291,7 +273,7 @@
   }
 }
 
-/* --- 4. Hormati preferensi pengurangan gerak ------------------------------ */
+/* Hormati prefers-reduced-motion. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;

@@ -168,6 +168,67 @@ Jangan menambahkan `@radix-ui/*`.
 
 ---
 
+## Skill turunan antislop
+
+Skill antislop ada di `.agents/skills/`, dipasang dari `miqdadbadjuber/anti-slop` dan
+tercatat di `skills-lock.json`. Enam komponen:
+
+| Komponen | Untuk apa |
+|---|---|
+| `antislop` (core, `antislop.md`) | Selalu. R-01..R-38 + Delivery Gate |
+| `antislop-ui` | Tampilan: warna, layout, komponen, dekorasi, motion |
+| `antislop-copywriting` | Teks: judul, CTA, value proposition, nada |
+| `antislop-human` | Kontras, keyboard, fokus, state. Termasuk `contrast-check.py` |
+| `antislop-layoutmobile` | Reflow antar layar: breakpoint, grid, overflow, tap target |
+| `antislop-code` | Komentar kode: buang yang bergenerik, sisakan yang berguna |
+
+### Memasang atau memperbarui
+
+```bash
+npx skills add miqdadbadjuber/anti-slop
+```
+
+**Perintah itu juga membuat junction `.claude/skills/`, dan junction itu WAJIB dihapus**,
+karena project ini memakai omp, bukan Claude Code:
+
+```bash
+powershell -NoProfile -Command "Get-ChildItem -Path '.claude\skills' -Force | Where-Object { $_.LinkType -eq 'Junction' } | ForEach-Object { $_.Delete() }; Remove-Item -Path '.claude' -Recurse -Force"
+```
+
+Pakai PowerShell, bukan `rm`, karena Windows memperlakukan junction sebagai direktori khusus
+dan `rm` akan gagal dengan `Permission denied`.
+
+### Memeriksa kelengkapan
+
+```bash
+node skills/verify-antislop-skills.mjs
+```
+
+Exit 0 berarti lengkap, dan skrip juga memastikan tidak ada sisa `.claude/`. Jalankan sebelum
+memakai Delivery Gate.
+
+Bila ada skill yang belum terpasang, **Delivery Gate tetap boleh dijalankan memakai
+`antislop.md` core saja**, tetapi keterbatasan itu **wajib disebutkan** di laporan akhir.
+Jangan mengklaim gate dijalankan lengkap bila sebagian skill masih kosong.
+
+### Pemeriksa kontras (wajib dipakai)
+
+`antislop-human` membawa pemeriksa kontras. **Selalu pakai ini untuk mengukur kontras**,
+jangan mengandalkan perhitungan manual atau klaim:
+
+```bash
+python .agents/skills/antislop-human/contrast-check.py <hex-foreground> <hex-background>
+```
+
+Ini sudah menemukan satu bug nyata yang lolos dari pengujian browser: teks putih di atas
+ketiga warna status gagal WCAG AA (2.15:1 sampai 3.76:1). Perbaikannya tercatat di
+`DESIGN.md` §2.
+
+Blok pointer `<!-- antislop:start -->` di akhir file ini adalah **sumber kebenaran** tentang
+skill mana yang terpasang. Bila Anda hanya memasang sebagian, hapus baris yang tidak terpakai.
+
+---
+
 ## Status `FE-insight-web`
 
 Repo `FE-insight-web` di folder sebelah adalah proyek yang **ketinggalan dan menunggu
@@ -209,10 +270,11 @@ Jangan mengarang nilai untuk ini; biarkan terlihat sebagai placeholder:
 <!-- antislop:start -->
 ## antislop
 For UI, copy, people, mobile layout, or code comments work, read `antislop.md` (core) and then the skill for the task:
-- UI / visual: `skills/antislop-ui/SKILL.md`
-- Copy & text: `skills/antislop-copywriting/SKILL.md`
-- People: `skills/antislop-human/SKILL.md`
-- Mobile / responsive: `skills/antislop-layoutmobile/SKILL.md`
-- Code comments: `skills/antislop-code/SKILL.md`
+- UI / visual: `.agents/skills/antislop-ui/SKILL.md`
+- Copy & text: `.agents/skills/antislop-copywriting/SKILL.md`
+- People: `.agents/skills/antislop-human/SKILL.md` (plus `contrast-check.py` in the same folder)
+- Mobile / responsive: `.agents/skills/antislop-layoutmobile/SKILL.md`
+- Code comments: `.agents/skills/antislop-code/SKILL.md`
+Check completeness before the Delivery Gate: `node skills/verify-antislop-skills.mjs`
 Before starting, ask the user when antislop applies: during the work, or after it is done.
 <!-- antislop:end -->

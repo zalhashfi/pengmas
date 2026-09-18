@@ -188,6 +188,33 @@ Dipakai lintas landing **dan** dashboard.
 6 level (EPA/WHO). Alasan: 3 level lebih cepat terbaca sekilas oleh guru/siswa, dan konsisten
 dengan ISPU serta `FE-insight-web`. Jangan menambah level warna tanpa keputusan baru.
 
+#### Warna Teks di Atas Badge Status (penyimpangan tercatat)
+
+Teks putih di atas ketiga warna status **GAGAL WCAG AA**. Ini terverifikasi memakai
+`.agents/skills/antislop-human/contrast-check.py`:
+
+| Latar | Teks putih | Hasil |
+|---|---|---|
+| `#10b981` Baik | `#ffffff` | **2.54:1** GAGAL (butuh 4.5:1) |
+| `#f59e0b` Sedang | `#ffffff` | **2.15:1** GAGAL |
+| `#ef4444` Tidak Sehat | `#ffffff` | **3.76:1** GAGAL |
+| `#64748b` Offline | `#ffffff` | 4.76:1 lolos |
+
+Karena itu badge status memakai **teks gelap**, bukan putih. **Warna latar statusnya tidak
+diubah**, karena warna yang sama juga dipakai sebagai titik indikator dan garis grafik, di
+mana aturan kontras teks tidak berlaku. Yang ditambahkan hanya warna teks:
+
+| Peran | Latar | Teks | Rasio |
+|---|---|---|---|
+| Baik | `#10b981` | `#052e20` | **5.84:1** |
+| Sedang | `#f59e0b` | `#3a2400` | **6.83:1** |
+| Tidak Sehat | `#ef4444` | `#2b0606` | **4.93:1** |
+| Offline | `#64748b` | `#ffffff` | 4.76:1 |
+
+Ini berlaku untuk badge berteks (dashboard). Di landing, warna status hanya muncul sebagai
+titik tanpa teks, sehingga tidak terpengaruh. Bila nanti badges diubah, **ukur ulang** dengan
+`contrast-check.py` sebelum menaikkan kembali kecepatan cahaya teksnya.
+
 ---
 
 ## 3. Aturan Makna Warna (WAJIB — jangan dilewat)

@@ -101,10 +101,30 @@ export function isCo2Urgent(co2: number | null | undefined): boolean {
   return co2 != null && co2 > CO2_THRESHOLDS.urgent;
 }
 
-/** Kelas warna untuk badge status. Satu-satunya tempat warna semantik dipetakan. */
+/**
+ * Kelas warna untuk badge status. Satu-satunya tempat warna semantik dipetakan.
+ *
+ * TEMUAN KONTRAS (antislop-human `contrast-check.py`):
+ * Teks PUTIH di atas ketiga warna status GAGAL WCAG AA:
+ *   - `#10b981` hijau   -> 2.54:1 (butuh 4.5:1)
+ *   - `#f59e0b` kuning  -> 2.15:1 (butuh 4.5:1)
+ *   - `#ef4444` merah   -> 3.76:1 (butuh 4.5:1)
+ *
+ * Karena itu teks badge memakai warna GELAP, bukan putih. Ketiga warna status
+ * aslinya (dari DESIGN.md §2) sengaja TIDAK diubah, karena warna itu dipakai
+ * juga sebagai titik indikator dan garis grafik di mana kontras teks tidak
+ * berlaku. Yang disesuaikan hanya warna teks di atasnya:
+ *   - hijau `#10b981` + `#052e20` -> lolos (terverifikasi)
+ *   - kuning `#f59e0b` + `#3a2400` -> lolos (terverifikasi)
+ *   - merah `#ef4444` + `#ffffff` -> 3.76:1, jadi dipakai `#3d0a0a`
+ *   - offline `#64748b` + putih -> 4.76:1, aman
+ *
+ * Warna teks gelap ini dipilih per-warna, bukan satu nilai, supaya tiap
+ * kombinasi benar-benar lolos dan tetap enak dibaca.
+ */
 export const QUALITY_STYLES: Record<QualityLevel, string> = {
-  good: "bg-status-good text-white border-status-good-border",
-  moderate: "bg-status-moderate text-white border-status-moderate-border",
-  unhealthy: "bg-status-unhealthy text-white border-status-unhealthy-border",
+  good: "bg-status-good text-status-good-ink border-status-good-border",
+  moderate: "bg-status-moderate text-status-moderate-ink border-status-moderate-border",
+  unhealthy: "bg-status-unhealthy text-status-unhealthy-ink border-status-unhealthy-border",
   unknown: "bg-status-offline text-white border-status-offline-border",
 };

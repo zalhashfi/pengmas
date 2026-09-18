@@ -1,0 +1,232 @@
+@import "tailwindcss";
+
+/* =============================================================================
+   Token desain Pengmas Air Quality.
+   Nilai diambil PERSIS dari DESIGN.md §2 (Color Palette & Theming).
+   Jangan mengarang nilai token baru di sini. Bila ada yang perlu diubah,
+   ubah DESIGN.md §2 dulu, lalu samakan file ini.
+
+   Struktur:
+     1. Token mentah (:root / .dark) - nilai oklch apa adanya dari DESIGN.md
+     2. Pemetaan ke @theme inline - supaya kelas Tailwind (bg-primary, text-muted-foreground)
+        bisa dipakai
+     3. Token semantik status kualitas udara (3 level, lihat DESIGN.md §2)
+     4. Base layer - default body, focus ring, smooth scroll
+   ============================================================================= */
+
+/* --- 1. Token mentah: LIGHT (default) ------------------------------------- */
+:root {
+  --background: oklch(0.995 0.004 230);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.53 0.21 245);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.97 0.008 235);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.965 0.005 235);
+  --muted-foreground: oklch(0.52 0.015 240);
+  --accent: oklch(0.96 0.02 235);
+  --accent-foreground: oklch(0.205 0.05 245);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.005 235);
+  --input: oklch(0.92 0.005 235);
+  --ring: oklch(0.53 0.21 245);
+  --chart-1: oklch(0.53 0.21 245);
+  --chart-2: oklch(0.65 0.18 190);
+  --chart-3: oklch(0.75 0.16 75);
+  --chart-4: oklch(0.62 0.22 30);
+  --chart-5: oklch(0.55 0.20 300);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0.004 230);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.53 0.21 245);
+  --sidebar-primary-foreground: oklch(0.99 0 0);
+  --sidebar-accent: oklch(0.96 0.015 235);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.92 0.005 235);
+  --sidebar-ring: oklch(0.53 0.21 245);
+
+  /* ---------------------------------------------------------------------
+     Elevation (Dimensional Layering - hasil ui-ux-pro-max --domain style).
+     Empat tingkat; bayangan diwarnai ke hue latar (bukan hitam pekat) supaya
+     terasa menyatu, bukan mengambang.
+     --------------------------------------------------------------------- */
+  --elevation-1: 0 1px 2px oklch(0.53 0.05 245 / 6%), 0 1px 3px oklch(0.53 0.05 245 / 4%);
+  --elevation-2: 0 2px 4px oklch(0.53 0.05 245 / 6%), 0 4px 12px oklch(0.53 0.05 245 / 6%);
+  --elevation-3: 0 4px 8px oklch(0.53 0.05 245 / 7%), 0 12px 28px oklch(0.53 0.05 245 / 8%);
+  --elevation-4: 0 8px 16px oklch(0.53 0.05 245 / 8%), 0 24px 48px oklch(0.53 0.05 245 / 10%);
+
+  /* Permukaan kartu ikon: latar biru tipis agar kotak ikon terasa satu
+     keluarga, dengan warna ikon memakai biru yang lebih gelap dari --primary
+     supaya tetap lulus kontras di atas latar tipis itu. */
+  --icon-tile-bg: oklch(0.95 0.03 245);
+  --icon-tile-fg: oklch(0.45 0.19 245);
+}
+
+/* --- 1b. Token mentah: DARK ----------------------------------------------- */
+.dark {
+  --background: oklch(0.14 0.015 240);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.18 0.02 240);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.18 0.02 240);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.72 0.17 240);
+  --primary-foreground: oklch(0.12 0.02 240);
+  --secondary: oklch(0.24 0.02 240);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.22 0.02 240);
+  --muted-foreground: oklch(0.70 0.02 240);
+  --accent: oklch(0.22 0.03 240);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.72 0.17 240);
+  --chart-1: oklch(0.72 0.17 240);
+  --chart-2: oklch(0.70 0.16 190);
+  --chart-3: oklch(0.78 0.15 75);
+  --chart-4: oklch(0.68 0.20 30);
+  --chart-5: oklch(0.65 0.18 300);
+  --sidebar: oklch(0.16 0.02 240);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.72 0.17 240);
+  --sidebar-primary-foreground: oklch(0.12 0.02 240);
+  --sidebar-accent: oklch(0.22 0.02 240);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 12%);
+  --sidebar-ring: oklch(0.72 0.17 240);
+}
+
+/* Override elevation untuk mode gelap. Latar gelap menelan bayangan tipis,
+   jadi opasitas dinaikkan dan warna bayangan dibuat lebih pekat. Nilai
+   --icon-tile-* juga digelapkan agar kotak ikon tidak menyala berlebihan. */
+.dark {
+  --elevation-1: 0 1px 2px oklch(0 0 0 / 30%), 0 1px 3px oklch(0 0 0 / 24%);
+  --elevation-2: 0 2px 4px oklch(0 0 0 / 32%), 0 4px 12px oklch(0 0 0 / 28%);
+  --elevation-3: 0 4px 8px oklch(0 0 0 / 36%), 0 12px 28px oklch(0 0 0 / 34%);
+  --elevation-4: 0 8px 16px oklch(0 0 0 / 40%), 0 24px 48px oklch(0 0 0 / 38%);
+  --icon-tile-bg: oklch(0.28 0.05 245);
+  --icon-tile-fg: oklch(0.80 0.12 245);
+}
+
+/* --- 2. Pemetaan ke utility Tailwind -------------------------------------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  /* Status kualitas udara - 3 level (DESIGN.md §2). Nilai hex ini SENGAJA
+     dipakai sebagai hex, bukan oklch, karena DESIGN.md menetapkannya sebagai
+     hex dan warna ini dipakai lintas landing + dashboard + SVG. */
+  --color-status-good: #10b981;
+  --color-status-good-border: #059669;
+  --color-status-moderate: #f59e0b;
+  --color-status-moderate-border: #d97706;
+  --color-status-unhealthy: #ef4444;
+  --color-status-unhealthy-border: #dc2626;
+  --color-status-offline: #64748b;
+  --color-status-offline-border: #475569;
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* Elevation & permukaan kartu ikon, dipakai lewat kelas shadow-e1..shadow-e4
+     dan bg-icon-tile / text-icon-tile. */
+  --shadow-e1: var(--elevation-1);
+  --shadow-e2: var(--elevation-2);
+  --shadow-e3: var(--elevation-3);
+  --shadow-e4: var(--elevation-4);
+  --color-icon-tile: var(--icon-tile-bg);
+  --color-icon-tile-fg: var(--icon-tile-fg);
+  /* Radius kartu referensi Nexora: 12px. Dipakai konsisten untuk SEMUA kartu
+     (Shape Consistency Lock, anti-slop R-11). */
+  --radius-card: 0.75rem;
+
+  --font-sans: var(--font-fira-sans);
+  --font-mono: var(--font-fira-code);
+}
+
+/* --- 3. Base layer -------------------------------------------------------- */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    /* Smooth scroll untuk tautan anchor di navbar (DESIGN.md §1).
+       `scroll-padding-top` memberi ruang setinggi navbar sticky (h-16 = 4rem)
+       supaya judul section tidak tertutup navbar setelah melompat. */
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-fira-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Angka metrik sensor selalu monospace (DESIGN.md §4). */
+  .tabular {
+    font-family: var(--font-fira-code), ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Focus ring yang terlihat dan konsisten (DESIGN.md §7).
+     Menggunakan `--ring` (Biru Langit) karena fokus termasuk aksi/brand,
+     bukan status kualitas udara. */
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+}
+
+/* --- 4. Hormati preferensi pengurangan gerak ------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

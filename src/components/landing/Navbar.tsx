@@ -31,7 +31,7 @@ export function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-border bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-1 px-3 sm:gap-4 sm:px-6">
+      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-0.5 px-2.5 sm:gap-4 sm:px-6">
         {/* Kiri: identitas. `min-w-0` + `truncate` mencegah blok ini mendorong
             kontrol di kanan keluar layar pada viewport sempit (375px). */}
         <Link

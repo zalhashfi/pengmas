@@ -64,6 +64,30 @@
      supaya tetap lulus kontras di atas latar tipis itu. */
   --icon-tile-bg: oklch(0.95 0.03 245);
   --icon-tile-fg: oklch(0.45 0.19 245);
+
+  /* ---------------------------------------------------------------------
+     Glassmorphism (hasil ui-ux-pro-max --domain style, query
+     "premium SaaS landing glassmorphism floating layer depth").
+     Tiga tingkat kaca: panel utama, panel sekunder, dan snippet mengambang.
+     Border bagian dalam memberi kesan refraksi tepi (lihat design-taste-frontend
+     Appendix C: label sebagai "web glassmorphism approximation", bukan Apple
+     Liquid Glass).
+     --------------------------------------------------------------------- */
+  --glass-bg: oklch(1 0 0 / 72%);
+  --glass-border: oklch(1 0 0 / 60%);
+  --glass-highlight: oklch(1 0 0 / 40%);
+  --glass-blur: 16px;
+  --glass-2-bg: oklch(1 0 0 / 55%);
+  --glass-2-blur: 10px;
+  --glass-snippet-bg: oklch(1 0 0 / 80%);
+  --glass-snippet-blur: 8px;
+
+  /* Mesh gradient: tiga titik radial warna brand dengan opasitas rendah.
+     Dipakai sebagai LATAR hero, BUKAN sebagai aksen tombol. Karena ini
+     dekoratif, ia tidak melanggar aturan "satu aksen" (R-29). */
+  --mesh-1: oklch(0.53 0.21 245 / 22%);
+  --mesh-2: oklch(0.65 0.18 190 / 14%);
+  --mesh-3: oklch(0.55 0.20 300 / 10%);
 }
 
 /* --- 1b. Token mentah: DARK ----------------------------------------------- */
@@ -80,14 +104,16 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.22 0.02 240);
   --muted-foreground: oklch(0.70 0.02 240);
-  --accent: oklch(0.22 0.03 240);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.17 240);
-  --chart-1: oklch(0.72 0.17 240);
-  --chart-2: oklch(0.70 0.16 190);
+  --icon-tile-bg: oklch(0.28 0.05 245);
+  --icon-tile-fg: oklch(0.80 0.12 245);
+  --glass-bg: oklch(0.18 0.02 240 / 70%);
+  --glass-border: oklch(1 0 0 / 14%);
+  --glass-highlight: oklch(1 0 0 / 8%);
+  --glass-2-bg: oklch(0.18 0.02 240 / 55%);
+  --glass-snippet-bg: oklch(0.22 0.02 240 / 80%);
+  --mesh-1: oklch(0.72 0.17 240 / 22%);
+  --mesh-2: oklch(0.70 0.16 190 / 14%);
+  --mesh-3: oklch(0.65 0.18 300 / 10%);
   --chart-3: oklch(0.78 0.15 75);
   --chart-4: oklch(0.68 0.20 30);
   --chart-5: oklch(0.65 0.18 300);
@@ -98,19 +124,10 @@
   --sidebar-accent: oklch(0.22 0.02 240);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 12%);
-  --sidebar-ring: oklch(0.72 0.17 240);
-}
-
-/* Override elevation untuk mode gelap. Latar gelap menelan bayangan tipis,
-   jadi opasitas dinaikkan dan warna bayangan dibuat lebih pekat. Nilai
-   --icon-tile-* juga digelapkan agar kotak ikon tidak menyala berlebihan. */
-.dark {
   --elevation-1: 0 1px 2px oklch(0 0 0 / 30%), 0 1px 3px oklch(0 0 0 / 24%);
   --elevation-2: 0 2px 4px oklch(0 0 0 / 32%), 0 4px 12px oklch(0 0 0 / 28%);
   --elevation-3: 0 4px 8px oklch(0 0 0 / 36%), 0 12px 28px oklch(0 0 0 / 34%);
   --elevation-4: 0 8px 16px oklch(0 0 0 / 40%), 0 24px 48px oklch(0 0 0 / 38%);
-  --icon-tile-bg: oklch(0.28 0.05 245);
-  --icon-tile-fg: oklch(0.80 0.12 245);
 }
 
 /* --- 2. Pemetaan ke utility Tailwind -------------------------------------- */
@@ -175,7 +192,14 @@
   /* Radius kartu referensi Nexora: 12px. Dipakai konsisten untuk SEMUA kartu
      (Shape Consistency Lock, anti-slop R-11). */
   --radius-card: 0.75rem;
-
+  --color-glass: var(--glass-bg);
+  --color-glass-border: var(--glass-border);
+  --color-glass-highlight: var(--glass-highlight);
+  --color-glass-2: var(--glass-2-bg);
+  --color-glass-snippet: var(--glass-snippet-bg);
+  --color-mesh-1: var(--mesh-1);
+  --color-mesh-2: var(--mesh-2);
+  --color-mesh-3: var(--mesh-3);
   --font-sans: var(--font-fira-sans);
   --font-mono: var(--font-fira-code);
 }
@@ -213,6 +237,57 @@
   :focus-visible {
     outline: 2px solid var(--ring);
     outline-offset: 2px;
+  }
+}
+
+/* --- 3b. Komponen kaca & mesh (component layer) -------------------------- */
+@layer components {
+  /* Panel kaca utama. Approximation web glassmorphism, BUKAN Apple Liquid
+     Glass (lihat design-taste-frontend Appendix C). Border dalam memberi
+     refraksi tepi; fallback solid di bawah `prefers-reduced-transparency`. */
+  .glass-panel {
+    background-color: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--elevation-3), inset 0 1px 0 var(--glass-highlight);
+  }
+
+  .glass-panel-2 {
+    background-color: var(--glass-2-bg);
+    backdrop-filter: blur(var(--glass-2-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--glass-2-blur)) saturate(140%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--elevation-2);
+  }
+
+  /* Snippet mengambang: panel kecil yang melayang di atas panel utama,
+     memberi kesan berlapis (Dimensional Layering). */
+  .glass-snippet {
+    background-color: var(--glass-snippet-bg);
+    backdrop-filter: blur(var(--glass-snippet-blur));
+    -webkit-backdrop-filter: blur(var(--glass-snippet-blur));
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--elevation-4);
+  }
+
+  /* Latar mesh gradient untuk hero. Tiga titik radial warna brand dengan
+     opasitas rendah. `pointer-events-none` wajib agar tidak menelan klik. */
+  .mesh-bg {
+    background-image:
+      radial-gradient(50% 50% at 15% 20%, var(--mesh-1), transparent 60%),
+      radial-gradient(45% 45% at 80% 15%, var(--mesh-2), transparent 55%),
+      radial-gradient(55% 55% at 60% 85%, var(--mesh-3), transparent 60%);
+  }
+
+  @media (prefers-reduced-transparency: reduce) {
+    .glass-panel,
+    .glass-panel-2,
+    .glass-snippet {
+      background-color: var(--card);
+      backdrop-filter: none;
+      -webkit-backdrop-filter: none;
+    }
   }
 }
 

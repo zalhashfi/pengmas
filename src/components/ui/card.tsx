@@ -4,24 +4,28 @@ import { cn } from "@/lib/utils";
  * Kartu dasar.
  *
  * Satu radius untuk seluruh halaman (Shape Consistency Lock, anti-slop R-11):
- * `rounded-card` = 12px, sesuai bahasa kartu pada referensi Nexora. Semua kartu
- * di landing memakai komponen ini supaya radius dan elevasinya tidak menyimpang.
+ * `rounded-card` = 12px.
  *
- * `elevation` memakai skala bertingkat (Dimensional Layering), bukan satu
- * bayangan untuk semua: kartu yang mengambang di atas latar (mis. panel hero)
- * memakai tingkat lebih tinggi daripada kartu yang duduk di dalam grid.
+ * `variant`:
+ *   - `solid`  = kartu putih standar dengan border + shadow halus.
+ *   - `glass`  = panel kaca dengan backdrop-blur (maks 2 per halaman, R-10).
+ *   - `tinted` = latar `secondary` (bukan `primary/3%` yang membuat teks
+ *     muted tidak terbaca), dengan border biru tipis.
+ *
+ * `elevation` memakai skala bertingkat (Dimensional Layering). Hover naik
+ * satu tingkat untuk umpan balik fisik.
  */
 export function Card({
   className,
   children,
   elevation = 1,
+  variant = "solid",
   interactive = false,
 }: {
   className?: string;
   children: React.ReactNode;
-  /** 1 = duduk di grid, 2 = sedikit menonjol, 3 = panel mengambang, 4 = paling atas. */
   elevation?: 1 | 2 | 3 | 4;
-  /** Transisi hover naik satu tingkat elevasi. */
+  variant?: "solid" | "glass" | "tinted";
   interactive?: boolean;
 }) {
   const shadow = {
@@ -31,12 +35,20 @@ export function Card({
     4: "shadow-e4",
   }[elevation];
 
+  const variantClass = {
+    solid: "border border-border bg-card",
+    glass: "glass-panel border-glass-border",
+    tinted: "border border-primary/15 bg-secondary",
+  }[variant];
+
   return (
     <div
       className={cn(
-        "rounded-card border border-border bg-card p-6",
+        "rounded-card p-6",
+        variantClass,
         shadow,
-        interactive && "transition-shadow duration-200 hover:shadow-e3",
+        interactive &&
+          "transition-all duration-200 hover:-translate-y-0.5 hover:shadow-e3 active:scale-[0.98]",
         className,
       )}
     >

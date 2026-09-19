@@ -254,6 +254,12 @@ Ditulis lengkap beserta alasannya di `DESIGN.md` §1 (Dial Antislop). Konsekuens
   transisi hover, dan reveal ringan.
 - **RHYTHM 2:** setiap section landing wajib punya komposisi yang terlihat berbeda. Jangan
   mengubah semua section menjadi pola "judul tengah + grid kartu identik".
+- **Latar section SERAGAM, jangan bergantian.** Semua section memakai latar yang sama;
+  pemisahnya cukup garis `border-b`. Membalik warna latar tiap section lain adalah tel yang
+  dinamai antislop "Alternating Background Only": ia terlihat seperti ritme padahal struktur
+  section-nya tetap sama. Ritme dibangun dari **komposisi** yang berbeda, bukan dari warna
+  latar. Jangan menambahkan `bg-secondary` pada section tanpa keputusan desain baru yang
+  tercatat di `DESIGN.md`.
 
 ---
 

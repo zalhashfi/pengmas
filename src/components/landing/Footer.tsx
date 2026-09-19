@@ -89,7 +89,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="border-t border-border bg-secondary/30">
+    <footer className="border-t border-border">
       <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
         <div className="grid gap-10 md:grid-cols-4">
           {/* Identitas */}

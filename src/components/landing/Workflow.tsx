@@ -12,13 +12,16 @@ import { IconTile } from "@/components/ui/icon-tile";
  * runtuh ke tumpukan vertikal (mobile). Berbeda dari grid kartu lain (RHYTHM 2).
  *
  * Label langkah = verba + objek, bukan "Tahap 1" (design-taste-frontend 9.F).
+ *
+ * Latar section sengaja sama dengan section lain. Lihat catatan di
+ * `Background.tsx` tentang tel "Alternating Background Only".
  */
 export function Workflow() {
   const { t } = useLang();
   const icons = [Radio, SlidersHorizontal, Gauge, Wind];
 
   return (
-    <section id="cara-kerja" className="border-b border-border bg-secondary/30">
+    <section id="cara-kerja" className="border-b border-border">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
         <h2 className="max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
           {t.workflow.title}

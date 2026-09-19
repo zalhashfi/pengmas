@@ -11,13 +11,20 @@ import { IconTile } from "@/components/ui/icon-tile";
  * Grid kartu mengikuti pola features Nexora, tetapi ASIMETRIS (R-14):
  * kartu pertama span 2 kolom dan memuat paragraf lebih panjang, dua berikutnya
  * satu kolom. Hierarki terlihat, bukan tiga kartu seragam.
+ *
+ * Latar section sengaja SAMA dengan section lain (tanpa bg-secondary). Jangan
+ * menambahkan latar bergantian: antislop menamainya tel "Alternating Background
+ * Only", karena variasi yang hanya membalik warna latar terlihat seperti ritme
+ * padahal struktur section-nya tetap sama. Pemisah antar section cukup garis
+ * `border-b`, yang sudah ada. Ritme halaman dibangun dari komposisi yang
+ * berbeda-beda, bukan dari warna latar.
  */
 export function Background() {
   const { t } = useLang();
   const icons = [BookOpen, Target, Layers];
 
   return (
-    <section id="latar-belakang" className="border-b border-border bg-secondary/30">
+    <section id="latar-belakang" className="border-b border-border">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
         <h2 className="max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
           {t.background.title}

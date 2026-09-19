@@ -223,32 +223,50 @@
 }
 
 /* Kaca dan mesh. */
+/* Kaca. Diletakkan di luar `@layer components` karena Lightning CSS
+   (minifier Tailwind v4) menghapus `backdrop-filter` tanpa prefix saat berada
+   di dalam layer, sehingga efek kaca tidak aktif di browser. Di luar layer,
+   kedua properti dipertahankan apa adanya.
+
+   Ini approximation web glassmorphism, BUKAN Apple Liquid Glass. Border dalam
+   memberi refraksi tepi. Fallback solid ada di `prefers-reduced-transparency`
+   di bawah. */
+@media (prefers-reduced-transparency: no-preference) {
+  .glass-panel,
+  .glass-panel-2,
+  .glass-snippet {
+    -webkit-backdrop-filter: saturate(150%);
+    backdrop-filter: saturate(150%);
+  }
+
+  .glass-panel,
+  .glass-panel-2 {
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  }
+
+  .glass-snippet {
+    -webkit-backdrop-filter: blur(var(--glass-snippet-blur));
+    backdrop-filter: blur(var(--glass-snippet-blur));
+  }
+}
+
 @layer components {
-  /* Panel kaca utama. Approximation web glassmorphism, BUKAN Apple Liquid
-     Glass (lihat design-taste-frontend Appendix C). Border dalam memberi
-     refraksi tepi; fallback solid di bawah `prefers-reduced-transparency`. */
   .glass-panel {
     background-color: var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur)) saturate(150%);
-    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
     border: 1px solid var(--glass-border);
     box-shadow: var(--elevation-3), inset 0 1px 0 var(--glass-highlight);
   }
 
   .glass-panel-2 {
     background-color: var(--glass-2-bg);
-    backdrop-filter: blur(var(--glass-2-blur)) saturate(140%);
-    -webkit-backdrop-filter: blur(var(--glass-2-blur)) saturate(140%);
     border: 1px solid var(--glass-border);
     box-shadow: var(--elevation-2);
   }
 
-  /* Snippet mengambang: panel kecil yang melayang di atas panel utama,
-     memberi kesan berlapis (Dimensional Layering). */
+  /* Snippet mengambang: panel kecil yang melayang di atas panel utama. */
   .glass-snippet {
     background-color: var(--glass-snippet-bg);
-    backdrop-filter: blur(var(--glass-snippet-blur));
-    -webkit-backdrop-filter: blur(var(--glass-snippet-blur));
     border: 1px solid var(--glass-border);
     box-shadow: var(--elevation-4);
   }
@@ -267,8 +285,6 @@
     .glass-panel-2,
     .glass-snippet {
       background-color: var(--card);
-      backdrop-filter: none;
-      -webkit-backdrop-filter: none;
     }
   }
 }

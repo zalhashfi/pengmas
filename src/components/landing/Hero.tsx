@@ -65,11 +65,18 @@ export function Hero() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-10">
           {/* Kolom kiri: teks */}
           <div className="flex flex-col items-start">
-            <p className="inline-flex items-center gap-1.5 rounded-full border border-glass-border bg-glass/60 px-3 py-1 text-[11px] font-medium tracking-wide text-secondary-foreground backdrop-blur-sm">
-              <span aria-hidden="true" className="size-1.5 rounded-full bg-status-good" />
+            {/* Identitas lembaga, bukan badge hias.
+                Sebelumnya ini sebuah pill dengan border tipis DAN dot hijau di
+                atas H1. Itu melanggar tiga aturan sekaligus: badge eyebrow di
+                atas headline (R-09), dot status yang tidak menandai state
+                apa pun (R-31), dan kombinasi penuh pill + border + dot.
+                Dot hijau juga menyerobot warna status kualitas udara yang
+                DESIGN.md §3 khususkan untuk udara, bukan ornamen.
+                Sekarang hanya nama lembaga sebagai baris teks biasa. */}
+            <p className="text-xs font-semibold tracking-wide text-primary">
               {t.hero.badge}
-              <span className="sr-only"> - {t.hero.badgeFull}</span>
             </p>
+            <p className="mt-1.5 text-[11px] text-muted-foreground">{t.hero.badgeFull}</p>
 
             <h1 className="mt-5 text-4xl font-bold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">
               {titleLead}{" "}
@@ -113,12 +120,13 @@ export function Hero() {
                   <span className="tabular text-[10px] text-muted-foreground">
                     {t.hero.panelSubtitle}
                   </span>
-                  <span className="flex items-center gap-1 text-[9px] font-medium text-status-good">
-                    <span className="size-1.5 animate-pulse rounded-full bg-status-good" />
-                    {t.hero.panelLive}
+                  {/* Label contoh, bukan "LIVE": tidak ada yang live di halaman
+                      ini, jadi penanda status apa pun akan berbohong (R-31, R-38). */}
+                  <span className="text-[9px] font-medium text-muted-foreground">
+                    {t.hero.panelSample}
                   </span>
                 </div>
-                {/* Mini sparkline dekoratif: 7 bar statis, bukan data nyata. */}
+                {/* Sparkline contoh: 7 bar statis, bukan data nyata. */}
                 <div className="flex flex-1 items-end gap-1">
                   {[40, 65, 50, 80, 55, 70, 60].map((h, i) => (
                     <span
@@ -150,17 +158,21 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Lapisan 4: panel kaca utama. `relative z-10` menjaga urutan tumpuk. */}
-            <div className="glass-panel relative z-10 rounded-card">
+            {/* Lapisan 4: panel utama. `relative z-10` menjaga urutan tumpuk.
+                Permukaan SOLID, bukan kaca: R-10 membatasi blur maksimum 1-2
+                elemen, dan kuota itu dipakai navbar + snippet sparkline.
+                Kedalaman tetap terasa lewat elevation bertingkat, bukan kaca. */}
+            <div className="relative z-10 rounded-card border border-border bg-card shadow-e4">
               {/* Kepala panel */}
-              <div className="flex items-center justify-between gap-3 border-b border-glass-border px-5 py-3.5">
+              <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-3.5">
                 <div className="min-w-0">
                   <p className="truncate text-sm font-semibold">{t.hero.panelTitle}</p>
                   <p className="truncate text-xs text-muted-foreground">{t.hero.panelSubtitle}</p>
                 </div>
-                <span className="flex shrink-0 items-center gap-1.5 rounded-full border border-glass-border bg-background/50 px-2.5 py-1 text-[10px] font-medium tracking-wide text-muted-foreground">
-                  <span aria-hidden="true" className="size-1.5 animate-pulse rounded-full bg-status-good" />
-                  {t.hero.panelLive}
+                {/* Label "Contoh", bukan penanda "LIVE". Halaman ini tidak
+                    mengambil data sensor, jadi status live akan menyesatkan. */}
+                <span className="shrink-0 rounded-full border border-border bg-background/50 px-2.5 py-1 text-[10px] font-medium tracking-wide text-muted-foreground">
+                  {t.hero.panelSample}
                 </span>
               </div>
 
@@ -170,7 +182,7 @@ export function Hero() {
               </div>
 
               {/* Ringkasan contoh */}
-              <div className="border-t border-glass-border px-5 py-4">
+              <div className="border-t border-border px-5 py-4">
                 <ul className="flex flex-col gap-2.5">
                   {sampleRows.map((row) => (
                     <li key={row.label} className="flex items-center gap-3">
@@ -186,7 +198,7 @@ export function Hero() {
                   ))}
                 </ul>
                 <p className="mt-3 text-[11px] leading-relaxed text-muted-foreground">
-                  {t.hero.panelNote}
+                  {t.hero.panelNote} {t.hero.panelNoteWhere}
                 </p>
               </div>
             </div>

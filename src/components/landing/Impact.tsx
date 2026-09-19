@@ -20,7 +20,7 @@ export function Impact() {
   const icons = [MonitorCheck, FlaskConical, School];
 
   return (
-    <section id="dampak" className="border-b border-border bg-secondary/30">
+    <section id="dampak" className="border-b border-border">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
         <h2 className="max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
           {t.impact.title}

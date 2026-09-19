@@ -56,8 +56,6 @@
   --glass-blur: 16px;
   --glass-2-bg: oklch(1 0 0 / 55%);
   --glass-2-blur: 10px;
-  --glass-snippet-bg: oklch(1 0 0 / 80%);
-  --glass-snippet-blur: 8px;
 
   /* Latar mesh hero. Dekoratif, jadi tidak melanggar aturan satu aksen (R-29). */
   --mesh-1: oklch(0.53 0.21 245 / 22%);
@@ -85,7 +83,6 @@
   --glass-border: oklch(1 0 0 / 14%);
   --glass-highlight: oklch(1 0 0 / 8%);
   --glass-2-bg: oklch(0.18 0.02 240 / 55%);
-  --glass-snippet-bg: oklch(0.22 0.02 240 / 80%);
   --mesh-1: oklch(0.72 0.17 240 / 22%);
   --mesh-2: oklch(0.70 0.16 190 / 14%);
   --mesh-3: oklch(0.65 0.18 300 / 10%);
@@ -178,7 +175,6 @@
   --color-glass-border: var(--glass-border);
   --color-glass-highlight: var(--glass-highlight);
   --color-glass-2: var(--glass-2-bg);
-  --color-glass-snippet: var(--glass-snippet-bg);
   --color-mesh-1: var(--mesh-1);
   --color-mesh-2: var(--mesh-2);
   --color-mesh-3: var(--mesh-3);
@@ -233,22 +229,11 @@
    di bawah. */
 @media (prefers-reduced-transparency: no-preference) {
   .glass-panel,
-  .glass-panel-2,
-  .glass-snippet {
-    -webkit-backdrop-filter: saturate(150%);
-    backdrop-filter: saturate(150%);
-  }
-
-  .glass-panel,
   .glass-panel-2 {
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
     backdrop-filter: blur(var(--glass-blur)) saturate(150%);
   }
 
-  .glass-snippet {
-    -webkit-backdrop-filter: blur(var(--glass-snippet-blur));
-    backdrop-filter: blur(var(--glass-snippet-blur));
-  }
 }
 
 @layer components {
@@ -264,13 +249,6 @@
     box-shadow: var(--elevation-2);
   }
 
-  /* Snippet mengambang: panel kecil yang melayang di atas panel utama. */
-  .glass-snippet {
-    background-color: var(--glass-snippet-bg);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--elevation-4);
-  }
-
   /* Latar mesh gradient untuk hero. Tiga titik radial warna brand dengan
      opasitas rendah. `pointer-events-none` wajib agar tidak menelan klik. */
   .mesh-bg {
@@ -282,8 +260,7 @@
 
   @media (prefers-reduced-transparency: reduce) {
     .glass-panel,
-    .glass-panel-2,
-    .glass-snippet {
+    .glass-panel-2 {
       background-color: var(--card);
     }
   }

@@ -7,26 +7,23 @@ import { buttonClass } from "@/components/ui/button";
 import { Hero3D } from "@/components/three/Hero3D";
 
 /**
- * Hero landing: split dua kolom dengan panel kaca berlapis.
+ * Hero landing: split dua kolom.
  *
- * Komposisinya mengikuti referensi Nexora dengan ketat:
- *   - Kolom kiri: badge, H1 (dengan satu kata di-accent), lead, dua tombol,
- *     dan trust badge di baris terpisah.
- *   - Kolom kanan: MODEL 3D duduk di dalam PANEL KACA utama (glass-panel),
- *     dengan SATU snippet kaca mengambang di belakangnya (glass-snippet)
- *     yang menampilkan mini-ringkasan, sehingga kolom kanan terasa berlapis
- *     dan hidup, bukan satu kotak polos.
+ *   - Kolom kiri: identitas lembaga, H1 (satu kata di-accent), lead, dua tombol.
+ *   - Kolom kanan: panel berisi model 3D dan ringkasan contoh, dengan satu
+ *     lapisan bayangan di belakangnya agar terasa terapung.
  *
  * Latar hero memakai mesh gradient tiga-titik warna brand (`.mesh-bg`),
- * BUKAN gradien AI-ungu. Karena ini dekoratif, ia tidak melanggar R-29.
+ * bukan gradien AI-ungu.
  *
- * Batas yang dipatuhi (anti-slop):
+ * Batas yang dipatuhi:
  *   - Maksimum 4 elemen teks di dalam hero.
  *   - Tanpa emoji. Ikon memakai lucide-react.
- *   - Angka di panel ditandai jelas sebagai contoh (R-17, R-38).
+ *   - Angka di panel ditandai jelas sebagai contoh (R-17, R-38), dan setiap
+ *     pembacaan hanya muncul SEKALI di halaman.
  *   - Tanpa em dash.
- *   - Glassmorphism dibatasi 2 elemen (panel + snippet), bukan di semua tempat
- *     (R-10: maks 1-2 elemen glass simultan).
+ *   - Blur dipakai navbar saja, karena R-10 membatasi maksimum 1-2 elemen.
+ *     Panel hero memakai elevasi bertingkat, bukan kaca.
  */
 export function Hero() {
   const { t } = useLang();
@@ -98,70 +95,26 @@ export function Hero() {
             </div>
           </div>
 
-          {/* Kolom kanan: komposisi berlapis.
-              Empat lapisan, mengikuti Dimensional Layering: lapisan bayangan
-              di belakang, snippet sparkline kiri-atas, snippet status kanan-bawah
-              (keduanya mengambang DI LUAR tepi panel, ciri khas referensi),
-              lalu panel kaca utama di depan. */}
+          {/* Kolom kanan: panel berlapis.
+              Satu panel utama dengan satu lapisan bayangan di belakangnya,
+              memberi kesan terapung tanpa menambah elemen yang tidak membawa
+              informasi baru.
+
+              Catatan revisi: dua snippet mengambang (sparkline statis dan
+              badge CO2) DIHAPUS. Alasan yang ditulis:
+                - Sparkline: 7 bar tanpa sumbu, tanpa label, tanpa satuan,
+                  jadi tidak menjawab pertanyaan apa pun.
+                - Badge CO2 742 ppm: angka yang SAMA sudah tampil di daftar
+                  contoh panel utama, jadi ia mengulang data yang sama. */}
           <div className="relative">
-            {/* Lapisan 1: bayangan lembut di belakang, memberi kesan panel terapung. */}
+            {/* Lapisan bayangan di belakang, memberi kesan panel terapung. */}
             <div
               aria-hidden="true"
               className="absolute inset-x-8 -bottom-4 top-10 rounded-card border border-border bg-card/50 shadow-e1"
             />
 
-            {/* Lapisan 2: snippet sparkline, mengambang di kiri-atas. */}
-            <div
-              aria-hidden="true"
-              className="glass-snippet absolute -left-4 -top-5 z-20 hidden h-28 w-40 rounded-card sm:block"
-            >
-              <div className="flex h-full flex-col gap-2 p-3">
-                <div className="flex items-center justify-between">
-                  <span className="tabular text-[10px] text-muted-foreground">
-                    {t.hero.panelSubtitle}
-                  </span>
-                  {/* Label contoh, bukan "LIVE": tidak ada yang live di halaman
-                      ini, jadi penanda status apa pun akan berbohong (R-31, R-38). */}
-                  <span className="text-[9px] font-medium text-muted-foreground">
-                    {t.hero.panelSample}
-                  </span>
-                </div>
-                {/* Sparkline contoh: 7 bar statis, bukan data nyata. */}
-                <div className="flex flex-1 items-end gap-1">
-                  {[40, 65, 50, 80, 55, 70, 60].map((h, i) => (
-                    <span
-                      key={i}
-                      className="flex-1 rounded-sm bg-primary/30"
-                      style={{ height: `${h}%` }}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Lapisan 3: snippet status, mengambang di kanan-bawah. Angka
-                ditandai sebagai contoh di panel utama di bawah.
-                Memakai permukaan SOLID, bukan kaca, untuk menaati batas dosis
-                R-10 (blur maksimum 1-2 elemen; navbar sudah memakai satu). */}
-            <div
-              aria-hidden="true"
-              className="absolute -bottom-5 -right-3 z-20 hidden items-center gap-3 rounded-card border border-border bg-card px-3.5 py-2.5 shadow-e4 sm:flex"
-            >
-              <span className="grid size-8 place-items-center rounded-lg bg-status-good/15">
-                <Wind className="size-4 text-status-good" />
-              </span>
-              <span className="flex flex-col leading-none">
-                <span className="tabular text-sm font-semibold">742</span>
-                <span className="mt-1 text-[10px] text-muted-foreground">
-                  {t.metrics.co2.name} · {t.metrics.co2.unit}
-                </span>
-              </span>
-            </div>
-
-            {/* Lapisan 4: panel utama. `relative z-10` menjaga urutan tumpuk.
-                Permukaan SOLID, bukan kaca: R-10 membatasi blur maksimum 1-2
-                elemen, dan kuota itu dipakai navbar + snippet sparkline.
-                Kedalaman tetap terasa lewat elevation bertingkat, bukan kaca. */}
+            {/* Panel utama. Permukaan solid: kuota blur R-10 (maks 1-2 elemen)
+                sudah dipakai navbar. */}
             <div className="relative z-10 rounded-card border border-border bg-card shadow-e4">
               {/* Kepala panel */}
               <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-3.5">

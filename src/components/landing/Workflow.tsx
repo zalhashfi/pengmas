@@ -18,7 +18,7 @@ export function Workflow() {
   const icons = [Radio, SlidersHorizontal, Gauge, Wind];
 
   return (
-    <section id="cara-kerja" className="border-b border-border">
+    <section id="cara-kerja" className="border-b border-border bg-secondary/30">
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:py-24">
         <h2 className="max-w-2xl text-3xl font-bold tracking-tight sm:text-4xl">
           {t.workflow.title}
